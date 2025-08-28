@@ -19,6 +19,12 @@ from revolutionary_intelligence import get_revolutionary_intelligence
 from content_creation_engine import get_content_creation_engine
 from knowledge_organizer import get_productivity_system
 
+# New hybrid capabilities
+from quick_actions import get_quick_actions
+from persistent_memory import get_persistent_memory
+from vault_intelligence import get_vault_intelligence
+from proactive_assistant import get_proactive_assistant
+
 # Initialize FastMCP server
 mcp = FastMCP("Obsidian Revolutionary Intelligence")
 
@@ -29,6 +35,12 @@ revolutionary_intelligence = None  # Will be initialized when vault path is conf
 content_engine = get_content_creation_engine()  # Content creation engine
 productivity_system = None  # Will be initialized when vault path is confirmed
 
+# Initialize hybrid capabilities
+quick_actions = None  # Will be initialized when vault path is confirmed
+persistent_memory = None  # Will be initialized when vault path is confirmed
+vault_intelligence = None  # Will be initialized when vault path is confirmed
+proactive_assistant = None  # Will be initialized when vault path is confirmed
+
 # Get vault path from environment or use default
 VAULT_PATH = os.getenv("OBSIDIAN_VAULT_PATH", 
                       os.path.expanduser("~/Documents/ObsidianVault"))
@@ -36,6 +48,8 @@ VAULT_PATH = os.getenv("OBSIDIAN_VAULT_PATH",
 def ensure_vault_exists():
     """Ensure the vault directory exists"""
     global productivity_features, revolutionary_intelligence, productivity_system
+    global quick_actions, persistent_memory, vault_intelligence, proactive_assistant
+    
     if not os.path.exists(VAULT_PATH):
         print(f"Warning: Vault path does not exist: {VAULT_PATH}")
         print("Set OBSIDIAN_VAULT_PATH environment variable")
@@ -52,6 +66,19 @@ def ensure_vault_exists():
     # Initialize productivity system
     if productivity_system is None:
         productivity_system = get_productivity_system(VAULT_PATH)
+    
+    # Initialize hybrid capabilities
+    if quick_actions is None:
+        quick_actions = get_quick_actions(VAULT_PATH)
+    
+    if persistent_memory is None:
+        persistent_memory = get_persistent_memory(VAULT_PATH)
+    
+    if vault_intelligence is None:
+        vault_intelligence = get_vault_intelligence(VAULT_PATH)
+    
+    if proactive_assistant is None:
+        proactive_assistant = get_proactive_assistant(VAULT_PATH, persistent_memory, vault_intelligence)
     
     return True
 
@@ -1820,6 +1847,243 @@ def create_summary_from_note(note_path: str) -> str:
         
     except Exception as e:
         return f"Summary creation failed: {e}"
+
+
+# ==================================================
+# HYBRID TOOLS: One-Click Conveniences + Unique Intelligence
+# ==================================================
+
+@mcp.tool()
+def quick_research_summary() -> str:
+    """
+    🚀 ONE-CLICK: Generate research summary based on your areas and recent notes
+    No typing needed - automatically analyzes your vault and creates targeted research summary prompt
+    """
+    if not ensure_vault_exists():
+        return "Error: Vault path not found"
+    
+    try:
+        prompt = quick_actions.generate_research_summary_prompt()
+        return f"📊 **Research Summary Prompt Generated:**\n\n{prompt}\n\n" + \
+               "💡 **Next Step:** Copy this prompt to Claude Desktop for instant research summary!"
+    except Exception as e:
+        return f"Error generating research summary prompt: {e}"
+
+@mcp.tool()
+def quick_blog_from_note(note_path: str) -> str:
+    """
+    🚀 ONE-CLICK: Convert any note to blog post
+    
+    Args:
+        note_path: Path to note to convert (e.g., "research/my-study.md")
+    """
+    if not ensure_vault_exists():
+        return "Error: Vault path not found"
+    
+    try:
+        prompt = quick_actions.generate_blog_conversion_prompt(note_path)
+        return f"✍️ **Blog Conversion Prompt Generated:**\n\n{prompt}\n\n" + \
+               "💡 **Next Step:** Copy this prompt to Claude Desktop for instant blog post creation!"
+    except Exception as e:
+        return f"Error generating blog conversion prompt: {e}"
+
+@mcp.tool()
+def quick_weekly_digest() -> str:
+    """
+    🚀 ONE-CLICK: Generate weekly research digest
+    Automatically creates newsletter-style digest based on your recent work and research areas
+    """
+    if not ensure_vault_exists():
+        return "Error: Vault path not found"
+    
+    try:
+        prompt = quick_actions.generate_weekly_digest_prompt()
+        return f"📰 **Weekly Digest Prompt Generated:**\n\n{prompt}\n\n" + \
+               "💡 **Next Step:** Copy this prompt to Claude Desktop for instant weekly digest!"
+    except Exception as e:
+        return f"Error generating weekly digest prompt: {e}"
+
+@mcp.tool()
+def remember_insight(content: str, insight_type: str = "general", importance: float = 0.5) -> str:
+    """
+    🧠 UNIQUE: Store insights across conversations for permanent memory
+    
+    Args:
+        content: The insight or key information to remember
+        insight_type: Type of insight (research, idea, connection, discovery)
+        importance: Importance score 0.0-1.0
+    """
+    if not ensure_vault_exists():
+        return "Error: Vault path not found"
+    
+    try:
+        success = persistent_memory.store_conversation_insight(content, insight_type, importance)
+        if success:
+            concepts = persistent_memory.extract_concepts(content)
+            for concept in concepts:
+                persistent_memory.store_concept(concept)
+            
+            return f"✅ **Insight Stored in Permanent Memory**\n" + \
+                   f"📝 Content: {content[:200]}...\n" + \
+                   f"🏷️ Type: {insight_type}\n" + \
+                   f"⭐ Importance: {importance}\n" + \
+                   f"🧩 Concepts: {', '.join(concepts[:5])}\n\n" + \
+                   "💡 This insight will be available across all future conversations!"
+        else:
+            return "❌ Failed to store insight"
+    except Exception as e:
+        return f"Error storing insight: {e}"
+
+@mcp.tool()
+def recall_concept_memory(concept: str, days_back: int = 30) -> str:
+    """
+    🧠 UNIQUE: Recall everything about a concept across all past conversations
+    
+    Args:
+        concept: Concept to recall (e.g., "machine learning", "transformers")
+        days_back: How many days back to search
+    """
+    if not ensure_vault_exists():
+        return "Error: Vault path not found"
+    
+    try:
+        history = persistent_memory.recall_concept_history(concept, days_back)
+        
+        if "error" in history:
+            return f"🔍 No memory found for '{concept}'"
+        
+        concept_info = history["concept"]
+        relationships = history["relationships"]
+        insights = history["recent_insights"]
+        
+        response = f"🧠 **Memory Recall: {concept}**\n\n"
+        response += f"📊 Stats: {concept_info['access_count']} accesses, importance {concept_info['importance_score']:.2f}\n\n"
+        
+        if relationships:
+            response += f"🔗 **Connected Concepts:**\n"
+            for rel in relationships[:5]:
+                response += f"- {rel['concepts'][0]} ↔ {rel['concepts'][1]} ({rel['strength']:.2f})\n"
+            response += "\n"
+        
+        if insights:
+            response += f"💡 **Recent Insights ({len(insights)}):**\n"
+            for insight in insights[:3]:
+                response += f"- {insight['content'][:100]}...\n"
+        
+        return response
+        
+    except Exception as e:
+        return f"Error recalling concept memory: {e}"
+
+@mcp.tool()
+def find_similar_notes(note_path: str, threshold: float = 0.3) -> str:
+    """
+    🧠 UNIQUE: Find notes similar to the given note using content analysis
+    
+    Args:
+        note_path: Path to note to find similar notes for
+        threshold: Similarity threshold (0.0-1.0)
+    """
+    if not ensure_vault_exists():
+        return "Error: Vault path not found"
+    
+    try:
+        similar = vault_intelligence.find_similar_notes(note_path, threshold)
+        
+        response = f"🔍 **Similar Notes to: {note_path}**\n\n"
+        
+        if similar:
+            for note in similar[:6]:
+                response += f"📝 **{note['title']}** (similarity: {note['similarity']:.2f})\n"
+                response += f"   Path: {note['path']}\n"
+                response += f"   Preview: {note['preview'][:100]}...\n"
+                response += f"   Common tags: {', '.join(note['common_tags']) if note['common_tags'] else 'none'}\n\n"
+        else:
+            response += "No similar notes found - this appears to be unique content!\n"
+        
+        return response
+        
+    except Exception as e:
+        return f"Error finding similar notes: {e}"
+
+@mcp.tool()
+def analyze_vault_health() -> str:
+    """
+    🧠 UNIQUE: Deep health analysis of your entire vault
+    """
+    if not ensure_vault_exists():
+        return "Error: Vault path not found"
+    
+    try:
+        health_report = vault_intelligence.get_vault_health_report()
+        
+        overview = health_report['overview']
+        health_scores = health_report['health_scores']
+        
+        response = f"📊 **Vault Health Report**\n\n"
+        response += f"📈 **Overview:** {overview['total_notes']} notes, {overview['connectivity_ratio']:.2%} connected\n"
+        response += f"🏥 **Health Scores:** Connectivity {health_scores['connectivity']}/100, Organization {health_scores['organization']}/100\n\n"
+        
+        recommendations = health_report['recommendations']
+        if recommendations:
+            response += f"💡 **Recommendations:**\n"
+            for rec in recommendations[:3]:
+                response += f"- {rec}\n"
+        
+        return response
+        
+    except Exception as e:
+        return f"Error analyzing vault health: {e}"
+
+@mcp.tool()
+def surface_forgotten_insights() -> str:
+    """
+    🧠 UNIQUE: Surface forgotten insights and patterns from your knowledge
+    """
+    if not ensure_vault_exists():
+        return "Error: Vault path not found"
+    
+    try:
+        insights = proactive_assistant.surface_forgotten_insights()
+        
+        response = f"💡 **Forgotten Insights**\n\n"
+        
+        if insights:
+            for insight in insights[:5]:
+                response += f"🔍 **{insight['type'].replace('_', ' ').title()}**\n"
+                response += f"   {insight['insight']}\n"
+                response += f"   Relevance: {insight['relevance_score']:.2f}\n\n"
+        else:
+            response += "No forgotten insights found - you're on top of your knowledge!\n"
+        
+        return response
+        
+    except Exception as e:
+        return f"Error surfacing forgotten insights: {e}"
+
+@mcp.tool()
+def get_knowledge_summary() -> str:
+    """
+    🧠 UNIQUE: Get summary of your persistent knowledge memory across all conversations
+    """
+    if not ensure_vault_exists():
+        return "Error: Vault path not found"
+    
+    try:
+        summary = persistent_memory.get_knowledge_summary()
+        
+        response = f"🧠 **Knowledge Memory Summary**\n\n"
+        response += f"📊 **Stats:** {summary['total_concepts']} concepts, {summary['total_relationships']} relationships, {summary['total_insights']} insights\n\n"
+        
+        if summary['top_concepts']:
+            response += f"🌟 **Top Concepts:**\n"
+            for concept in summary['top_concepts'][:6]:
+                response += f"- {concept['name']} (accessed {concept['access_count']}x)\n"
+        
+        return response
+        
+    except Exception as e:
+        return f"Error getting knowledge summary: {e}"
 
 
 if __name__ == "__main__":
