@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "obsidian-revolutionary": {
+      "command": "/home/windowslinux/Documents/obsdian_integration/fastmcp-server/venv/bin/python",
+      "args": ["/home/windowslinux/Documents/obsdian_integration/fastmcp-server/obsidian_server.py"],
+      "env": {
+        "OBSIDIAN_VAULT_PATH": "/home/windowslinux/MEGA/Phd_life_All/PhD_life"
+      }
+    }
+  }
+}
