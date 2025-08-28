@@ -7,21 +7,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.1.0] - 2025-08-28
+
 ### Added
 - Knowledge Organization Tools (4 new tools)
-- Automatic knowledge categorization
-- Tag hierarchy creation
-- Visual knowledge mapping
-- Progress tracking and reporting
-- Content repurposing capabilities
+  - `organize_knowledge_base()` - Automatic categorization and mapping
+  - `generate_progress_report()` - Task and project progress tracking
+  - `convert_note_to_blog_post(note_path)` - Repurpose notes as blog posts
+  - `create_summary_from_note(note_path)` - Create summaries of existing notes
+- Knowledge Organizer module (`knowledge_organizer.py`)
+- Test suite for knowledge organization features (`test_knowledge_organization.py`)
+- GitHub repository setup files (LICENSE, CONTRIBUTING.md, CHANGELOG.md)
+- Enhanced documentation and README files
 
 ### Changed
-- Updated documentation to reflect new tools
-- Enhanced README with comprehensive feature list
-- Improved test coverage
+- Updated documentation to reflect new tools (29 total tools across 5 categories)
+- Enhanced main README with comprehensive feature list and better structure
+- Improved project structure with proper GitHub files
+- Updated CLAUDE.md with new tool counts and categories
 
 ### Fixed
 - Minor bug fixes in productivity features
+- Improved test coverage for all functionality
 
 ## [1.0.0] - 2025-08-28
 
@@ -29,6 +36,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Initial release of Obsidian Revolutionary Intelligence MCP Server
 - Core Note Management (6 tools)
 - Enhanced Productivity Tools (7 tools)
+  - Project workflow automation
+  - Objectives and Key Results (OKRs)
+  - Deep work focus session tracking
+  - Productivity pattern analysis
 - Revolutionary AI Research Tools (5 tools)
 - Research-to-Content Pipeline Tools (7 tools)
 - One-command setup with `setup.sh`
