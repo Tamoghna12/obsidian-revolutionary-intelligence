@@ -16,14 +16,14 @@ def test_revolutionary_features():
     
     # Test imports
     try:
-        from obsidian_server import mcp
+        from src.obsidian_server import mcp
         print("✅ Core MCP server imports successfully")
     except Exception as e:
         print(f"❌ Core MCP import failed: {e}")
         return False
     
     try:
-        from revolutionary_intelligence import (
+        from src.revolutionary_intelligence import (
             AutonomousResearchAgent, 
             SemanticKnowledgeGraph, 
             MultiModalProcessor,

@@ -7,10 +7,10 @@ import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__)))
 
-from productivity_enhancer import get_productivity_enhancer
+from src.productivity_enhancer import get_productivity_enhancer
 import tempfile
 import shutil
-from datetime import datetime
+from src.datetime import datetime
 
 def test_productivity_enhancer():
     """Test all productivity enhancer features"""

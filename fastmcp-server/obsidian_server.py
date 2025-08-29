@@ -14,16 +14,16 @@ import frontmatter
 import re
 
 from fastmcp import FastMCP
-from enhanced_templates import TemplateManager, ProductivityFeatures
-from revolutionary_intelligence import get_revolutionary_intelligence
-from content_creation_engine import get_content_creation_engine
-from knowledge_organizer import get_productivity_system
+from src.enhanced_templates import TemplateManager, ProductivityFeatures
+from src.revolutionary_intelligence import get_revolutionary_intelligence
+from src.content_creation_engine import get_content_creation_engine
+from src.knowledge_organizer import get_productivity_system
 
 # New hybrid capabilities
-from quick_actions import get_quick_actions
-from persistent_memory import get_persistent_memory
-from vault_intelligence import get_vault_intelligence
-from proactive_assistant import get_proactive_assistant
+from src.quick_actions import get_quick_actions
+from src.persistent_memory import get_persistent_memory
+from src.vault_intelligence import get_vault_intelligence
+from src.proactive_assistant import get_proactive_assistant
 
 # Initialize FastMCP server
 mcp = FastMCP("Obsidian Revolutionary Intelligence")

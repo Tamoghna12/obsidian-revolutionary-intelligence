@@ -7,7 +7,7 @@ import sys
 import os
 sys.path.append(os.path.dirname(__file__))
 
-from obsidian_server import mcp
+from src.obsidian_server import mcp
 
 def test_tools():
     """Test that all enhanced tools are registered"""

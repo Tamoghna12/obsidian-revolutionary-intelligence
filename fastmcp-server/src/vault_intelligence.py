@@ -312,7 +312,7 @@ class VaultIntelligence:
             'knowledge_hubs': sorted(hubs, key=lambda x: x['total_connections'], reverse=True)[:10],
             'total_notes': len(self._content_index),
             'total_links': sum(len(links) for links in self._link_graph.values()),
-            'avg_backlinks': sum(stats['backlink_count'] for stats in self._file_stats.values()) / len(self._file_stats)
+            'avg_backlinks': sum(stats['backlink_count'] for stats in self._file_stats.values()) / max(len(self._file_stats), 1)
         }
     
     def get_vault_health_report(self) -> Dict[str, Any]:
@@ -341,8 +341,8 @@ class VaultIntelligence:
             },
             'health_scores': {
                 'connectivity': min(100, int(connectivity_ratio * 100)),
-                'organization': min(100, max(0, 100 - (len(orphans) / total_notes * 100))),
-                'uniqueness': min(100, max(0, 100 - (len(duplicates) / total_notes * 200)))
+                'organization': min(100, max(0, 100 - (len(orphans) / max(total_notes, 1) * 100))),
+                'uniqueness': min(100, max(0, 100 - (len(duplicates) / max(total_notes, 1) * 200)))
             },
             'recommendations': self._generate_health_recommendations(orphans, duplicates, connectivity_ratio),
             'top_issues': orphans[:5] + [dup for dup in duplicates[:3]]

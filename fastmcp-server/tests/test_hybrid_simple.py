@@ -9,8 +9,8 @@ import tempfile
 import shutil
 from pathlib import Path
 
-# Add the current directory to the Python path
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+# Add the parent directory to the Python path for imports
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 def create_test_vault():
     """Create a temporary test vault"""
@@ -41,28 +41,28 @@ def test_hybrid_features():
     try:
         # Test individual components
         print("  Testing Quick Actions...")
-        from quick_actions import get_quick_actions
+        from src.quick_actions import get_quick_actions
         qa = get_quick_actions(vault_path)
         prompt = qa.generate_research_summary_prompt()
         assert len(prompt) > 50
         print("  ✓ Quick Actions working")
         
         print("  Testing Persistent Memory...")
-        from persistent_memory import get_persistent_memory
+        from src.persistent_memory import get_persistent_memory
         pm = get_persistent_memory(vault_path)
         success = pm.store_concept("Test Concept", "Test description")
         assert success > 0
         print("  ✓ Persistent Memory working")
         
         print("  Testing Vault Intelligence...")
-        from vault_intelligence import get_vault_intelligence
+        from src.vault_intelligence import get_vault_intelligence
         vi = get_vault_intelligence(vault_path)
         health = vi.get_vault_health_report()
         assert "overview" in health
         print("  ✓ Vault Intelligence working")
         
         print("  Testing Proactive Assistant...")
-        from proactive_assistant import get_proactive_assistant
+        from src.proactive_assistant import get_proactive_assistant
         pa = get_proactive_assistant(vault_path, pm, vi)
         suggestions = pa.generate_proactive_suggestions()
         assert isinstance(suggestions, list)

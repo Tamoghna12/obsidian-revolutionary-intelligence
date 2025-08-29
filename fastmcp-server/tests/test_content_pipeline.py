@@ -19,7 +19,7 @@ def test_content_creation_pipeline():
     
     # Test imports
     try:
-        from content_creation_engine import get_content_creation_engine, ResearchPaperFetcher, ContentGenerator
+        from src.content_creation_engine import get_content_creation_engine, ResearchPaperFetcher, ContentGenerator
         print("✅ Content creation engine imports successfully")
         
         engine = get_content_creation_engine()
@@ -34,7 +34,7 @@ def test_content_creation_pipeline():
     
     # Test enhanced server with new tools
     try:
-        from obsidian_server import mcp
+        from src.obsidian_server import mcp
         print("✅ Enhanced server imports successfully")
         
         # Count tools (should now include content creation tools)

@@ -17,7 +17,7 @@ def test_podcast_feature():
     
     # Test imports
     try:
-        from content_creation_engine import get_content_creation_engine, ContentGenerator
+        from src.content_creation_engine import get_content_creation_engine, ContentGenerator
         print("✅ Content creation engine imports successfully")
         
         engine = get_content_creation_engine()

@@ -107,7 +107,7 @@ Convert this research note into an engaging blog post:
 
 Title: {title}
 Tags: {', '.join(tags)}
-Research Areas: {', '.join(self.extract_research_areas()[:2])}
+Research Areas: {', '.join([area[0] for area in self.extract_research_areas()[:2]])}
 
 Original Note Content:
 {content_preview}

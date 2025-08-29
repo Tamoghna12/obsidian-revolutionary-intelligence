@@ -7,10 +7,10 @@ import sys
 import os
 sys.path.append(os.path.join(os.path.dirname(__file__)))
 
-from knowledge_organizer import get_productivity_system
+from src.knowledge_organizer import get_productivity_system
 import tempfile
 import shutil
-from datetime import datetime
+from src.datetime import datetime
 
 def test_knowledge_organization_system():
     """Test all knowledge organization and productivity features"""
